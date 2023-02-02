@@ -11,7 +11,7 @@ patterns = {
 }
 
 
-PII_FIELDS = ("name", "email", "phone", "ip", "last_login")
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(
