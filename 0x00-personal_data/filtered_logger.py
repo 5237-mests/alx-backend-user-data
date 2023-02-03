@@ -6,6 +6,8 @@ import re
 import os
 import mysql.connector
 from typing import List
+from dotenv import load_dotenv
+load_dotenv()
 
 patterns = {
     'extract': lambda x, y: r'(?P<field>{})=[^{}]*'.format('|'.join(x), y),
