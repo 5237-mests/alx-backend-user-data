@@ -5,6 +5,8 @@ from flask import request
 
 from typing import List, TypeVar
 
+import re
+
 
 class Auth:
     """class Auth
@@ -19,7 +21,22 @@ class Auth:
         Returns:
             bool: _description_
         """
-        return False
+        # if path is None or excluded_paths is None or excluded_paths == []:
+        #     return True
+        # if path in excluded_paths:
+        #     return False
+        if path is not None and excluded_paths is not None:
+            for ex_path in map(lambda el: el.strip(), excluded_paths):
+                path_pattern = ''
+                if ex_path[-1] == '*':
+                    path_pattern = '{}.*'.format(ex_path[0:-1])
+                elif ex_path[-1] == '/':
+                    path_pattern = '{}/*'.format(ex_path[0:-1])
+                else:
+                    path_pattern = '{}/*'.format(ex_path)
+                if re.match(path_pattern, path):
+                    return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """_summary_
