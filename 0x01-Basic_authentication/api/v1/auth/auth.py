@@ -21,10 +21,6 @@ class Auth:
         Returns:
             bool: _description_
         """
-        # if path is None or excluded_paths is None or excluded_paths == []:
-        #     return True
-        # if path in excluded_paths:
-        #     return False
         if path is not None and excluded_paths is not None:
             for ex_path in map(lambda el: el.strip(), excluded_paths):
                 path_pattern = ''
@@ -47,6 +43,8 @@ class Auth:
         Returns:
             str: _description_
         """
+        if request is not None:
+            return request.headers.get('Authorization', None)
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
