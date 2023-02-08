@@ -72,7 +72,9 @@ class BasicAuth(Auth):
             return (None, None)
         splited_string = decoded_base64_authorization_header.split(":")
         email = splited_string[0]
-        password = splited_string[1]
+        new_splited_pss = splited_string.copy()
+        new_splited_pss.pop(0)
+        password = ':'.join(str(el) for el in new_splited_pss)
         return (email, password)
 
     def user_object_from_credentials(
