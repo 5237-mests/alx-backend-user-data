@@ -5,6 +5,8 @@ import re
 
 import base64
 
+from typing import Tuple
+
 from api.v1.auth.auth import Auth
 
 
@@ -49,3 +51,24 @@ class BasicAuth(Auth):
         except Exception:
             return None
         return decoded.decode("utf-8")
+
+    def extract_user_credentials(
+                                self,
+                                decoded_base64_authorization_header: str
+                                ) -> Tuple[str, str]:
+        """extract cred
+
+        Args:
+            decoded_base64_authorization_header (str): decoded cred
+
+        Returns:
+            Tuple[str, str]: user and emial.
+        """
+        if decoded_base64_authorization_header is None or \
+                type(decoded_base64_authorization_header) != str or \
+                re.search(":", decoded_base64_authorization_header) is None:
+            return (None, None)
+        splited_string = decoded_base64_authorization_header.split(":")
+        email = splited_string[0]
+        password = splited_string[1]
+        return (email, password)
