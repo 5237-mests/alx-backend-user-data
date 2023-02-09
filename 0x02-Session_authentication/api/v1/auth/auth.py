@@ -7,6 +7,8 @@ from typing import List, TypeVar
 
 import re
 
+from os import getenv
+
 
 class Auth:
     """class Auth
@@ -50,4 +52,15 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """_summary_
         """
+        return None
+
+    def session_cookie(self, request=None):
+        """session cookie
+
+        Args:
+            request (_type_, optional): request. Defaults to None.
+        """
+        if request:
+            _my_session_id = getenv('SESSION_NAME')
+            return request.cookies.get(_my_session_id)
         return None
