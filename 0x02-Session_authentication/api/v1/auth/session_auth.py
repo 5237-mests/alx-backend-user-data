@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Session module
 """
+import uuid
+
 from api.v1.auth.auth import Auth
 
-import uuid
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -21,9 +23,9 @@ class SessionAuth(Auth):
             str: Session ID
         """
         if type(user_id) == str:
-            ID = str(uuid.uuid4())
-            self.user_id_by_session_id[ID] = user_id
-            return ID
+            session_id = str(uuid.uuid4())
+            self.user_id_by_session_id[session_id] = user_id
+            return session_id
         return None
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
@@ -35,6 +37,15 @@ class SessionAuth(Auth):
         Returns:
             str: returns a User ID based on a Session ID:
         """
-        if type(session_id) == str:
+        if type(session_id) is str:
             return self.user_id_by_session_id.get(session_id)
-        return None
+
+    def current_user(self, request=None) -> User:
+        """cookie
+
+        Args:
+            request (_type_, optional): _description_. Defaults to None.
+        """
+        cookie_value = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(cookie_value)
+        return User.get(user_id)
