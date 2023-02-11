@@ -13,13 +13,13 @@ from api.v1.auth.session_exp_auth import SessionExpAuth
 class SessionDBAuth(SessionExpAuth):
     """class for authenticating session db
     """
-    def create_session(self, user_id=None):
+    def create_session(self, user_id=None) -> str:
         """create session"""
         session_id = super().create_session(user_id)
         if type(session_id) == str:
             kwargs = {
                 'user_id': user_id,
-                'created': session_id,
+                'session_id': session_id,
             }
             user_session = UserSession(**kwargs)
             user_session.save()
@@ -40,7 +40,7 @@ class SessionDBAuth(SessionExpAuth):
             return None
         return sessions[0].user_id
 
-    def destroy_session(self, request=None):
+    def destroy_session(self, request=None) -> bool:
         """destroy session"""
         session_id = self.session_cookie(request)
         try:
