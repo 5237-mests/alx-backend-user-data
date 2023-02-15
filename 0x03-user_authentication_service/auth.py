@@ -3,6 +3,7 @@
 """
 
 import bcrypt
+import uuid
 from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
@@ -41,3 +42,8 @@ class Auth:
         except NoResultFound:
             return False
         return False
+
+    @property
+    def _generate_uuid():
+        """generate uuid str"""
+        return str(uuid.uuid4())
