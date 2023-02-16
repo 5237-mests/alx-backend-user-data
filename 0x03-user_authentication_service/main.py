@@ -3,8 +3,8 @@
 """
 import requests
 
-EMAIL = "guillaume@holberton.io78"
-PASSWD = "b4l0u78"
+EMAIL = "guillaume@holberton.io"
+PASSWD = "b4l0u"
 NEW_PASSWD = "t4rt1fl3tt3"
 
 base_url = "http://localhost:5000/"
