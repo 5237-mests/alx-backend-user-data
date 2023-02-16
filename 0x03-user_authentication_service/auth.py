@@ -79,7 +79,7 @@ class Auth:
         self._db.update_user(user_id, session_id=None)
 
     def get_reset_password_token(self, email: str) -> str:
-        """get reset token"""
+        """generate reset token"""
         if email is None:
             return
         try:
@@ -89,3 +89,15 @@ class Auth:
         reset_token = _generate_uuid()
         self._db.update_user(user.id, reset_token=reset_token)
         return reset_token
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """update user password"""
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+        except NoResultFound:
+            raise ValueError
+        hashed_psw = _hash_password(password)
+        self._db.update_user(
+            user.id,
+            {"hashed_password": hashed_psw, "reset_token": None}
+        )
