@@ -78,17 +78,19 @@ def get_reset_password_token():
     return jsonify({"email": email, "reset_token": reset_token}), 200
 
 
-@app.route("/reset_password", methods=['PUT'], strict_slashes=False)
-def update_password() -> str:
-    """update PASSWORD"""
-    if 'email' not in request.form or \
-            'reset_token' not in request.form or \
-            'new_password' not in request.form:
-        return jsonify({'message': "miss one or more field"}), 400
-    email = request.form.get('email')
+@app.route("/reset_password", strict_slashes=False, methods=["PUT"])
+def update_password():
+    """ update password"""
+    form_data = request.form
+    if "email" not in form_data:
+        return jsonify({"message": "email required"}), 400
+    if "reset_token" not in form_data:
+        return jsonify({"message": "reset_token required"}), 400
+    if "new_password" not in form_data:
+        return jsonify({"message": "new_password required"}), 400
+    email = request.form.get("email")
     reset_token = request.form.get("reset_token")
-    new_password = request.form.get('new_password')
-
+    new_password = request.form.get("new_password")
     try:
         AUTH.update_password(reset_token, new_password)
         return jsonify({"email": email, "message": "Password updated"}), 200
