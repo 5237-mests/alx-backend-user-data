@@ -82,7 +82,7 @@ def get_reset_password_token():
 def update_password():
     """update PASSWORD"""
     email = request.form.get('email')
-    reset_token = request.cookies.get("reset_token")
+    reset_token = request.form.get("reset_token")
     new_password = request.form.get('new_password')
     try:
         user = AUTH._db.find_user_by(reset_token=reset_token)
